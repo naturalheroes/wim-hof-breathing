@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wim Hof Breathing</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Wim Hof Breathing Exercise</h1>
+        <div id="controls">
+            <button id="startBtn">Start</button>
+            <button id="pauseBtn" disabled>Pause</button>
+            <button id="resetBtn" disabled>Reset</button>
+        </div>
+        <div id="status">
+            <p>Status: <span id="breathStatus">Idle</span></p>
+            <p>Round: <span id="roundCount">0</span> / 3</p>
+            <p>Breath Count: <span id="breathCount">0</span> / 30</p>
+            <p>Timer: <span id="timer">00:00</span></p>
+        </div>
+        <div id="instructions">
+            <p>Instructions: Press Start to begin the exercise.</p>
+        </div>
+    </div>
+
+    <audio id="inhaleAudio" src="assets/inhale.mp3" preload="auto"></audio>
+    <audio id="exhaleAudio" src="assets/exhale.mp3" preload="auto"></audio>
+    <audio id="holdAudio" src="assets/hold.mp3" preload="auto"></audio>
+    <audio id="musicAudio" src="assets/music.mp3" loop preload="auto"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html> 
