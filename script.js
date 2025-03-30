@@ -1,12 +1,28 @@
 const startBtn = document.getElementById('startBtn');
 const pauseBtn = document.getElementById('pauseBtn');
 const resetBtn = document.getElementById('resetBtn');
+const settingsBtn = document.getElementById('settingsBtn');
+const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+const settingsPanel = document.getElementById('settings-panel');
+
 const breathStatusEl = document.getElementById('breathStatus');
 const roundCountEl = document.getElementById('roundCount');
 const breathCountEl = document.getElementById('breathCount');
 const timerEl = document.getElementById('timer');
 const instructionsEl = document.getElementById('instructions').querySelector('p');
+const totalRoundsEl = document.getElementById('totalRounds');
+const totalBreathsEl = document.getElementById('totalBreaths');
 
+// Settings inputs
+const roundsInput = document.getElementById('roundsInput');
+const breathsInput = document.getElementById('breathsInput');
+const holdTimeInput = document.getElementById('holdTimeInput');
+const breathVolumeInput = document.getElementById('breathVolumeInput');
+const musicVolumeInput = document.getElementById('musicVolumeInput');
+const breathVolumeValueEl = document.getElementById('breathVolumeValue');
+const musicVolumeValueEl = document.getElementById('musicVolumeValue');
+
+// Audio elements
 const inhaleAudio = document.getElementById('inhaleAudio');
 const exhaleAudio = document.getElementById('exhaleAudio');
 const holdAudio = document.getElementById('holdAudio');
@@ -19,11 +35,79 @@ let currentBreath = 0;
 let holdTime = 0;
 let elapsedTime = 0;
 
-const ROUNDS = 3;
-const BREATHS_PER_ROUND = 30;
-const INITIAL_HOLD_TIME = 60; // seconds, can increase per round if desired
+// Default settings
+let ROUNDS = 3;
+let BREATHS_PER_ROUND = 30;
+let INITIAL_HOLD_TIME = 60; // seconds
 const BREATHE_IN_TIME = 1500; // milliseconds
 const BREATHE_OUT_TIME = 1500; // milliseconds
+
+// Load settings from localStorage if available
+function loadSettings() {
+    if (localStorage.getItem('wimHofSettings')) {
+        const settings = JSON.parse(localStorage.getItem('wimHofSettings'));
+        ROUNDS = settings.rounds;
+        BREATHS_PER_ROUND = settings.breathsPerRound;
+        INITIAL_HOLD_TIME = settings.holdTime;
+        
+        // Update input values
+        roundsInput.value = ROUNDS;
+        breathsInput.value = BREATHS_PER_ROUND;
+        holdTimeInput.value = INITIAL_HOLD_TIME;
+        
+        // Update volume settings
+        if (settings.breathVolume !== undefined) {
+            breathVolumeInput.value = settings.breathVolume;
+            updateBreathVolume(settings.breathVolume);
+        }
+        
+        if (settings.musicVolume !== undefined) {
+            musicVolumeInput.value = settings.musicVolume;
+            updateMusicVolume(settings.musicVolume);
+        }
+    }
+    
+    // Update display
+    totalRoundsEl.textContent = ROUNDS;
+    totalBreathsEl.textContent = BREATHS_PER_ROUND;
+}
+
+// Save settings to localStorage
+function saveSettings() {
+    const settings = {
+        rounds: parseInt(roundsInput.value),
+        breathsPerRound: parseInt(breathsInput.value),
+        holdTime: parseInt(holdTimeInput.value),
+        breathVolume: parseFloat(breathVolumeInput.value),
+        musicVolume: parseFloat(musicVolumeInput.value)
+    };
+    
+    localStorage.setItem('wimHofSettings', JSON.stringify(settings));
+    
+    // Update variables
+    ROUNDS = settings.rounds;
+    BREATHS_PER_ROUND = settings.breathsPerRound;
+    INITIAL_HOLD_TIME = settings.holdTime;
+    
+    // Update display
+    totalRoundsEl.textContent = ROUNDS;
+    totalBreathsEl.textContent = BREATHS_PER_ROUND;
+    
+    // Hide settings panel
+    settingsPanel.style.display = 'none';
+}
+
+function updateBreathVolume(value) {
+    inhaleAudio.volume = value;
+    exhaleAudio.volume = value;
+    holdAudio.volume = value;
+    breathVolumeValueEl.textContent = `${Math.round(value * 100)}%`;
+}
+
+function updateMusicVolume(value) {
+    musicAudio.volume = value;
+    musicVolumeValueEl.textContent = `${Math.round(value * 100)}%`;
+}
 
 function formatTime(seconds) {
     const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
@@ -40,6 +124,7 @@ function updateUI() {
     startBtn.disabled = state !== 'idle' && state !== 'paused';
     pauseBtn.disabled = state === 'idle' || state === 'paused';
     resetBtn.disabled = state === 'idle';
+    settingsBtn.disabled = state !== 'idle';
 }
 
 function playSound(audioElement) {
@@ -183,6 +268,7 @@ function finishExercise() {
     startBtn.disabled = false;
     pauseBtn.disabled = true;
     resetBtn.disabled = true;
+    settingsBtn.disabled = false;
     // Reset counters for next run
     currentRound = 0;
     currentBreath = 0;
@@ -260,9 +346,23 @@ function resetExercise() {
     instructionsEl.textContent = 'Press Start to begin the exercise.';
 }
 
+function toggleSettings() {
+    settingsPanel.style.display = settingsPanel.style.display === 'none' || settingsPanel.style.display === '' ? 'block' : 'none';
+}
+
+// Event listeners
 startBtn.addEventListener('click', startExercise);
 pauseBtn.addEventListener('click', pauseExercise);
 resetBtn.addEventListener('click', resetExercise);
+settingsBtn.addEventListener('click', toggleSettings);
+saveSettingsBtn.addEventListener('click', saveSettings);
 
-// Initial UI setup
+// Volume control event listeners
+breathVolumeInput.addEventListener('input', (e) => updateBreathVolume(e.target.value));
+musicVolumeInput.addEventListener('input', (e) => updateMusicVolume(e.target.value));
+
+// Initial setup
+loadSettings();
+updateBreathVolume(breathVolumeInput.value);
+updateMusicVolume(musicVolumeInput.value);
 updateUI(); 

@@ -14,11 +14,19 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+    max-width: 600px;
+    width: 100%;
 }
 
 h1 {
     color: #333;
     margin-bottom: 20px;
+}
+
+h2 {
+    color: #555;
+    font-size: 1.3em;
+    margin-bottom: 15px;
 }
 
 #controls button {
@@ -43,6 +51,10 @@ h1 {
     background-color: #f44336; /* Red */
 }
 
+#settingsBtn {
+    background-color: #2196F3; /* Blue */
+}
+
 #controls button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
@@ -63,4 +75,79 @@ h1 {
     font-style: italic;
     color: #777;
     margin-top: 20px;
+}
+
+/* Settings Panel Styles */
+#settings-panel {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+    border: 1px solid #ddd;
+    display: none; /* Hidden by default */
+}
+
+.settings-group {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+.settings-group:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.setting {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.setting label {
+    flex: 1;
+    margin-right: 15px;
+    font-weight: bold;
+    color: #555;
+}
+
+.setting input[type="number"] {
+    width: 70px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.setting input[type="range"] {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+}
+
+.volume-control span {
+    width: 40px;
+    text-align: right;
+}
+
+#saveSettingsBtn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: block;
+    margin: 15px 0 0 auto;
+}
+
+#saveSettingsBtn:hover {
+    background-color: #45a049;
 } 
