@@ -17,6 +17,8 @@ const totalBreathsEl = document.getElementById('totalBreaths');
 const roundsInput = document.getElementById('roundsInput');
 const breathsInput = document.getElementById('breathsInput');
 const holdTimeInput = document.getElementById('holdTimeInput');
+const breathPaceInput = document.getElementById('breathPaceInput');
+const breathPaceValueEl = document.getElementById('breathPaceValue');
 const breathVolumeInput = document.getElementById('breathVolumeInput');
 const musicVolumeInput = document.getElementById('musicVolumeInput');
 const breathVolumeValueEl = document.getElementById('breathVolumeValue');
@@ -39,8 +41,9 @@ let elapsedTime = 0;
 let ROUNDS = 3;
 let BREATHS_PER_ROUND = 30;
 let INITIAL_HOLD_TIME = 60; // seconds
-const BREATHE_IN_TIME = 1500; // milliseconds
-const BREATHE_OUT_TIME = 1500; // milliseconds
+let BREATH_PACE = 1.5; // seconds per breath (both inhale and exhale)
+let BREATHE_IN_TIME = BREATH_PACE * 1000; // milliseconds
+let BREATHE_OUT_TIME = BREATH_PACE * 1000; // milliseconds
 
 // Load settings from localStorage if available
 function loadSettings() {
@@ -54,6 +57,13 @@ function loadSettings() {
         roundsInput.value = ROUNDS;
         breathsInput.value = BREATHS_PER_ROUND;
         holdTimeInput.value = INITIAL_HOLD_TIME;
+        
+        // Load breathing pace if available
+        if (settings.breathPace !== undefined) {
+            BREATH_PACE = settings.breathPace;
+            breathPaceInput.value = BREATH_PACE;
+            updateBreathPace(BREATH_PACE);
+        }
         
         // Update volume settings
         if (settings.breathVolume !== undefined) {
@@ -74,10 +84,14 @@ function loadSettings() {
 
 // Save settings to localStorage
 function saveSettings() {
+    const breathPace = parseFloat(breathPaceInput.value);
+    updateBreathPace(breathPace);
+    
     const settings = {
         rounds: parseInt(roundsInput.value),
         breathsPerRound: parseInt(breathsInput.value),
         holdTime: parseInt(holdTimeInput.value),
+        breathPace: breathPace,
         breathVolume: parseFloat(breathVolumeInput.value),
         musicVolume: parseFloat(musicVolumeInput.value)
     };
@@ -95,6 +109,13 @@ function saveSettings() {
     
     // Hide settings panel
     settingsPanel.style.display = 'none';
+}
+
+function updateBreathPace(value) {
+    BREATH_PACE = value;
+    BREATHE_IN_TIME = value * 1000;
+    BREATHE_OUT_TIME = value * 1000;
+    breathPaceValueEl.textContent = `${value}s`;
 }
 
 function updateBreathVolume(value) {
@@ -360,6 +381,7 @@ saveSettingsBtn.addEventListener('click', saveSettings);
 // Volume control event listeners
 breathVolumeInput.addEventListener('input', (e) => updateBreathVolume(e.target.value));
 musicVolumeInput.addEventListener('input', (e) => updateMusicVolume(e.target.value));
+breathPaceInput.addEventListener('input', (e) => breathPaceValueEl.textContent = `${e.target.value}s`);
 
 // Initial setup
 loadSettings();
