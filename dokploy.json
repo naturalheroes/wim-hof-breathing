@@ -1,0 +1,8 @@
+{
+  "name": "wim-hof-breathing",
+  "type": "static",
+  "publish_directory": ".",
+  "env": {
+    "PORT": "3000"
+  }
+} 

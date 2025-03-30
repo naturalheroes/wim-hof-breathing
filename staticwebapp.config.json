@@ -1,0 +1,26 @@
+{
+  "navigationFallback": {
+    "rewrite": "index.html",
+    "exclude": ["/assets/*.{mp3,png,jpg,jpeg}", "/*.css", "/*.js"]
+  },
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/index.html",
+      "statusCode": 200
+    }
+  },
+  "routes": [
+    {
+      "route": "/assets/*",
+      "headers": {
+        "cache-control": "must-revalidate, max-age=15770000"
+      }
+    },
+    {
+      "route": "/*",
+      "headers": {
+        "cache-control": "must-revalidate, max-age=86400"
+      }
+    }
+  ]
+} 
