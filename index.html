@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wim Hof Breathing</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -15,33 +16,62 @@
             <div class="settings-group">
                 <div class="setting">
                     <label for="roundsInput">Number of Rounds:</label>
-                    <input type="number" id="roundsInput" min="1" max="10" value="3">
+                    <div class="input-with-reset">
+                        <input type="number" id="roundsInput" min="1" max="10" value="3">
+                        <button class="reset-btn" data-default="3" data-target="roundsInput" title="Reset to default">
+                            <i class="fas fa-undo-alt"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="setting">
                     <label for="breathsInput">Breaths per Round:</label>
-                    <input type="number" id="breathsInput" min="10" max="50" value="30">
+                    <div class="input-with-reset">
+                        <input type="number" id="breathsInput" min="10" max="50" value="30">
+                        <button class="reset-btn" data-default="30" data-target="breathsInput" title="Reset to default">
+                            <i class="fas fa-undo-alt"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="setting">
                     <label for="holdTimeInput">Initial Hold Time (seconds):</label>
-                    <input type="number" id="holdTimeInput" min="30" max="180" value="60">
+                    <div class="input-with-reset">
+                        <input type="number" id="holdTimeInput" min="30" max="180" value="60">
+                        <button class="reset-btn" data-default="60" data-target="holdTimeInput" title="Reset to default">
+                            <i class="fas fa-undo-alt"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="setting breath-pace-control">
+                <div class="setting">
                     <label for="breathPaceInput">Breathing Pace (seconds/breath):</label>
-                    <input type="range" id="breathPaceInput" min="1" max="4" step="0.5" value="1.5">
-                    <span id="breathPaceValue">1.5s</span>
+                    <div class="input-with-reset">
+                        <input type="number" id="breathPaceInput" min="1" max="4" step="0.5" value="1.5">
+                        <button class="reset-btn" data-default="1.5" data-target="breathPaceInput" title="Reset to default">
+                            <i class="fas fa-undo-alt"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
             
             <div class="settings-group">
                 <div class="setting volume-control">
                     <label for="breathVolumeInput">Breathing Sounds Volume:</label>
-                    <input type="range" id="breathVolumeInput" min="0" max="1" step="0.1" value="0.7">
-                    <span id="breathVolumeValue">70%</span>
+                    <div class="input-with-reset">
+                        <input type="range" id="breathVolumeInput" min="0" max="1" step="0.1" value="0.7">
+                        <span id="breathVolumeValue">70%</span>
+                        <button class="reset-btn" data-default="0.7" data-target="breathVolumeInput" title="Reset to default">
+                            <i class="fas fa-undo-alt"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="setting volume-control">
                     <label for="musicVolumeInput">Background Music Volume:</label>
-                    <input type="range" id="musicVolumeInput" min="0" max="1" step="0.1" value="0.5">
-                    <span id="musicVolumeValue">50%</span>
+                    <div class="input-with-reset">
+                        <input type="range" id="musicVolumeInput" min="0" max="1" step="0.1" value="0.5">
+                        <span id="musicVolumeValue">50%</span>
+                        <button class="reset-btn" data-default="0.5" data-target="musicVolumeInput" title="Reset to default">
+                            <i class="fas fa-undo-alt"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
             

@@ -113,6 +113,12 @@ h2 {
     color: #555;
 }
 
+.input-with-reset {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
 .setting input[type="number"] {
     width: 70px;
     padding: 8px;
@@ -126,14 +132,38 @@ h2 {
     margin-right: 10px;
 }
 
-.volume-control, .breath-pace-control {
+.volume-control .input-with-reset {
+    flex: 1;
     display: flex;
     align-items: center;
 }
 
-.volume-control span, .breath-pace-control span {
+.volume-control span {
     width: 40px;
     text-align: right;
+    margin-right: 10px;
+}
+
+.reset-btn {
+    background: none;
+    border: none;
+    color: #777;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px;
+    margin-left: 5px;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.reset-btn:hover {
+    background-color: #e0e0e0;
+    color: #333;
 }
 
 #saveSettingsBtn {

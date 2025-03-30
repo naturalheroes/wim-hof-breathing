@@ -4,6 +4,7 @@ const resetBtn = document.getElementById('resetBtn');
 const settingsBtn = document.getElementById('settingsBtn');
 const saveSettingsBtn = document.getElementById('saveSettingsBtn');
 const settingsPanel = document.getElementById('settings-panel');
+const resetButtons = document.querySelectorAll('.reset-btn');
 
 const breathStatusEl = document.getElementById('breathStatus');
 const roundCountEl = document.getElementById('roundCount');
@@ -18,7 +19,6 @@ const roundsInput = document.getElementById('roundsInput');
 const breathsInput = document.getElementById('breathsInput');
 const holdTimeInput = document.getElementById('holdTimeInput');
 const breathPaceInput = document.getElementById('breathPaceInput');
-const breathPaceValueEl = document.getElementById('breathPaceValue');
 const breathVolumeInput = document.getElementById('breathVolumeInput');
 const musicVolumeInput = document.getElementById('musicVolumeInput');
 const breathVolumeValueEl = document.getElementById('breathVolumeValue');
@@ -38,12 +38,38 @@ let holdTime = 0;
 let elapsedTime = 0;
 
 // Default settings
-let ROUNDS = 3;
-let BREATHS_PER_ROUND = 30;
-let INITIAL_HOLD_TIME = 60; // seconds
-let BREATH_PACE = 1.5; // seconds per breath (both inhale and exhale)
+const DEFAULT_SETTINGS = {
+    rounds: 3,
+    breathsPerRound: 30,
+    holdTime: 60,
+    breathPace: 1.5,
+    breathVolume: 0.7,
+    musicVolume: 0.5
+};
+
+let ROUNDS = DEFAULT_SETTINGS.rounds;
+let BREATHS_PER_ROUND = DEFAULT_SETTINGS.breathsPerRound;
+let INITIAL_HOLD_TIME = DEFAULT_SETTINGS.holdTime; // seconds
+let BREATH_PACE = DEFAULT_SETTINGS.breathPace; // seconds per breath (both inhale and exhale)
 let BREATHE_IN_TIME = BREATH_PACE * 1000; // milliseconds
 let BREATHE_OUT_TIME = BREATH_PACE * 1000; // milliseconds
+
+// Reset input to default value
+function resetToDefault(inputId, defaultValue) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    
+    input.value = defaultValue;
+    
+    // Handle special cases
+    if (inputId === 'breathVolumeInput') {
+        updateBreathVolume(defaultValue);
+    } else if (inputId === 'musicVolumeInput') {
+        updateMusicVolume(defaultValue);
+    } else if (inputId === 'breathPaceInput') {
+        updateBreathPace(defaultValue);
+    }
+}
 
 // Load settings from localStorage if available
 function loadSettings() {
@@ -115,7 +141,6 @@ function updateBreathPace(value) {
     BREATH_PACE = value;
     BREATHE_IN_TIME = value * 1000;
     BREATHE_OUT_TIME = value * 1000;
-    breathPaceValueEl.textContent = `${value}s`;
 }
 
 function updateBreathVolume(value) {
@@ -381,7 +406,25 @@ saveSettingsBtn.addEventListener('click', saveSettings);
 // Volume control event listeners
 breathVolumeInput.addEventListener('input', (e) => updateBreathVolume(e.target.value));
 musicVolumeInput.addEventListener('input', (e) => updateMusicVolume(e.target.value));
-breathPaceInput.addEventListener('input', (e) => breathPaceValueEl.textContent = `${e.target.value}s`);
+
+// Register reset button click handlers
+resetButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        const targetInput = this.getAttribute('data-target');
+        const defaultValue = this.getAttribute('data-default');
+        resetToDefault(targetInput, defaultValue);
+    });
+});
+
+// Update breath volume display on input change
+breathVolumeInput.addEventListener('input', (e) => {
+    breathVolumeValueEl.textContent = `${Math.round(e.target.value * 100)}%`;
+});
+
+// Update music volume display on input change
+musicVolumeInput.addEventListener('input', (e) => {
+    musicVolumeValueEl.textContent = `${Math.round(e.target.value * 100)}%`;
+});
 
 // Initial setup
 loadSettings();
